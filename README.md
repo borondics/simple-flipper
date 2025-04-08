@@ -1,7 +1,7 @@
 # simple-flipper
 Arduino-based controller for beam shutter and flip mirror applications
 
-The repository provides open-source hardware and software designs for very simple servo based applications requiring the switching between two predifined positions. Exxamples: beam shutter, flip mirror, etc.
+The repository provides open-source hardware and software designs for very simple servo based applications requiring the switching between two predifined positions. Examples: beam shutter, flip mirror, etc.
 
 # :warning: :warning: :warning: Disclaimer :bangbang: :bangbang: :bangbang:
 
