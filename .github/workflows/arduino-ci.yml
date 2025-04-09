@@ -15,7 +15,10 @@ jobs:
           library-manager: update
           compliance: permissive
           path: ./code/servo_control.ino
-          
+
+      - name: Install Arduino CLI
+        uses: arduino/setup-arduino-cli@v2
+  
       - name: Arduino Compile      
         uses: arduino/compile-sketches@v1
         with:
