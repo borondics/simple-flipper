@@ -23,6 +23,3 @@ jobs:
         uses: arduino/compile-sketches@v1
         with:
           fqbn: "arduino:avr:uno"
-          libraries: |
-            - name: Adafruit_PWMServoDriver
-            - name: CommandParser
