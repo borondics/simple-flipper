@@ -1,4 +1,4 @@
-name: Arduino Lint
+name: Arduino CI
 
 on: [push, pull_request]
 
@@ -15,3 +15,12 @@ jobs:
           library-manager: update
           compliance: permissive
           path: ./code/servo_control.ino
+          
+      - name: Arduino Compile      
+        uses: arduino/compile-sketches@v1
+          with:
+            fqbn: "arduino:avr:uno"
+            libraries: |
+              - name: Wire
+              - name: Adafruit_PWMServoDriver
+              - name: CommandParser
