@@ -18,9 +18,9 @@ jobs:
           
       - name: Arduino Compile      
         uses: arduino/compile-sketches@v1
-          with:
-            fqbn: "arduino:avr:uno"
-            libraries: |
-              - name: Wire
-              - name: Adafruit_PWMServoDriver
-              - name: CommandParser
+        with:
+          fqbn: "arduino:avr:uno"
+          libraries: |
+            - name: Wire
+            - name: Adafruit_PWMServoDriver
+            - name: CommandParser
