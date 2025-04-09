@@ -24,6 +24,5 @@ jobs:
         with:
           fqbn: "arduino:avr:uno"
           libraries: |
-            - name: Wire
             - name: Adafruit_PWMServoDriver
             - name: CommandParser
