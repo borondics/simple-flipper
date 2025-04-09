@@ -14,4 +14,4 @@ jobs:
         with:
           library-manager: update
           compliance: strict
-          working-directory: /home/runner/work/simple-flipper/code/
+          path: ./code/
