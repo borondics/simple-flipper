@@ -1,87 +1,53 @@
 # simple-flipper
-Arduino driven flipper devices
+Arduino-based controller for beam shutter and flip mirror applications
 
+The repository provides open-source hardware and software designs for very simple servo based applications requiring the switching between two predifined positions. Examples: beam shutter, flip mirror, etc.
 
-Here, we provide software and hardware design to build a thermoelectric cooler/heater (TEC) sample stage with precision temperature control.
-The design can be modified to fit any instrument. Our implementation is compatible with [neaSNOM/neaSCOPE](https://www.neaspec.com/) microscopes.
+# :warning: :warning: :warning: Disclaimer :bangbang: :bangbang: :bangbang:
 
-## Software installation
-
-This software was designed to run on Windows 10. However, we used Python modules that should allow cross-platform 
-operation.
-
-⚠️ COM port listing: when using other operation systems, please modify the COM port addressing part of the code accordingly
-
-We suggest to install the software in a new Python environment as follows:
-
-`(base) > conda create --name <environment_name> --file requirements.txt`
-
-The [pyMeCom](https://github.com/spomjaksilp/pyMeCom) Python module for the communication protocol of the Controller can be installed with pip
-
-```
-(base) > conda activate <environment_name>
-(<environment_name>) > conda install pip
-(<environment_name>) > pip install git+https://github.com/spomjaksilp/pyMeCom.git
-```
-
-Launch the main application file:
-
-` (<environment_name>) > python heaterApp.py`
-
+This project is far from finished, the current state only allows limited functionality and not proprely tested in all experimental situations. Use it with caution, and if you have suggestions or want to join development please contact us, make your own fork, create pull requests, submit issues, leave comments ....  
 
 # Components
 
-## Main parts
-
-- https://www.amazon.fr/dp/B07236KYVC/ref=pe_27091421_487030221_TE_SCE_dp_1
-
 ## Electronics
 
-### Thermoelectric controller
+The electronic design is based on an [Arduino nano](https://docs.arduino.cc/hardware/nano/) (but any type can be used) and [PCA9685 16-Channel Servo Driver](https://learn.adafruit.com/16-channel-pwm-servo-driver/).
 
-The Peltier elements are controlled with a Meerstetter TEC-1091 precision Peltier temperature controller. Product page: https://www.meerstetter.ch/products/tec-controllers/tec-1091
+The arduino code provided in the .code folder gives a very basic control implementation with three predefined positions (servo pwm value has to be calibrated before used, [see](https://learn.adafruit.com/16-channel-pwm-servo-driver/using-the-adafruit-library))
 
-
-Our implementation looks like this:
-![cad_design](/Images/cad_design.png)
-
-### Connectors
-
-We used a D-Sub 9 pins connector for both terminals, thus all GPIO and sensor pins of the controller are available and accessible through the two D-Sub 9 pins ports on the box. The input and the output ports are DC power plugs.
-
+The arduino communicates to the board by I2C thus only a few connection are required. 
+The software implementation is using the PCA9685 16-Channel PWM Driver Module Library library.
 ### Wiring
 
-The wiring between the controller pins and the D-Sub 9 pins pins is arbitrary. Here is an example of the sensor pins/D-Sub layout.
-![wiring](/Images/TECcontroller_wiring.png)
+The following wiring is adviced especially with using multiple servos:
+![basic_wiring](/images/basic_wiring_image.png)
 
-Our version looks like this (colors and pins do not correspond to the design figure above):
-![final_box](/Images/final_box.png)
+For further infromation we refer to the servo board documentation.
 
-### Peltier elements
+Our implementation looks like this:
+PHOTO
+<!-- ![cad_design](/images/cad_design.png) -->
 
-In v1.0 we can accommodate two Peltier elements that we purchased from Thorlabs.
+### Code and communication
 
-- TECD2S: https://www.thorlabs.com/thorproduct.cfm?partnumber=TECD2S
-- TECF2S: https://www.thorlabs.com/thorproduct.cfm?partnumber=TECF2S
+The arduino code handles the servo control (position values: SERVOMIN, SERVOMAX, SERVOMID have to be set) and provides a very basic command set to change positions and get the current position values using serial commands (using [Arduino-CommandParser](https://docs.arduino.cc/libraries/commandparser/)).
 
-⚠️ To properly drive the Peltier elements, you have to give their characteristics and electronic properties (such as maximum current, resistance, voltage) to the TEC controller.
+Currently, the following protocol was implemented:
 
-Here we provide the configuration files for our stage/peltier combinations. The configuration files can be uploaded to the controller via the [TEC Service Software](https://www.meerstetter.ch/products/tec-controllers/tec-1091) from the related downloads/software panel.
+Command: SETPOS A motornumber
+Action: *Moves the servo addresse by <int: motornumber> to position A*
+Example: "POS A 0"
 
-We provide here the two config files in this repository /Software/tecd2s_parameters.ini and /Software/tecf2s_parameters.ini
+Command: SETPOS B motornumber
+Action: *Moves the servo addresse by <int: motornumber> to position B*
+Example: "POS B 0"
 
-⚠️ It is likely that you have to retune the PID parameters of the controller. You can do this by using the autotune option of the TEC Service Software. For more information see the controller manual.
+Command: SETPOS O motornumber
+Action: Moves the servo addresse by <int: motornumber> to home position with is the middlepoint between A and B
 
-The CAD files to build the sample stage with two, replaceable Peltier elements are in the CAD directory. 
-In v1.0 we modified a [commercial heatsink](https://hu.rs-online.com/web/p/hutobordak/5040772?gb=b) to dissipate the heat when cooling, which is integrated with the sample stage as the image shows below.
+Command: GETPOS motornumber
+Action: Returns the current position of the mirror flip based on the PWM value of the controller board
 
-![stage](/Images/heaterStage_hardware.png)
-
-## Performance
-
-Temperature response and stability of the heating stage.
-
-![controllapp_new](/Images/controllapp_new.png)
 
 ## License
 
