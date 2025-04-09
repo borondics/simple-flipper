@@ -14,4 +14,4 @@ jobs:
         with:
           library-manager: update
           compliance: strict
-          path: ./code/
+          path: ./code/servo_control.ino
