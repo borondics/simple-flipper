@@ -1,3 +1,5 @@
+[![Arduino Lint](https://github.com/borondics/simple-flipper/actions/workflows/arduino-lint.yml/badge.svg)](https://github.com/borondics/simple-flipper/actions/workflows/arduino-lint.yml)
+
 # simple-flipper
 Arduino-based controller for beam shutter and flip mirror applications
 
